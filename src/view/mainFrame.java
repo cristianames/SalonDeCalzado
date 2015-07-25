@@ -25,9 +25,16 @@ import javax.swing.JTree;
 import javax.swing.UIManager;
 import java.awt.Color;
 import javax.swing.border.MatteBorder;
+
+import logic.mainLogic;
+
 import javax.swing.border.LineBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class mainFrame extends JFrame {
 
@@ -42,6 +49,7 @@ public class mainFrame extends JFrame {
 	 * @wbp.nonvisual location=-27,259
 	 */
 	private final JTree tree = new JTree();
+	private JTextField txtTxtstmax;
 
 	/**
 	 * Launch the application.
@@ -93,6 +101,11 @@ public class mainFrame extends JFrame {
 		pnlConfig.add(lblEmpleados);
 		
 		JSlider slider = new JSlider();
+		slider.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				txtTxtstmax.setText(String.valueOf(slider.getValue()));
+			}
+		});
 		slider.setBackground(UIManager.getColor("ToggleButton.highlight"));
 		slider.setForeground(UIManager.getColor("ToggleButton.darkShadow"));
 		slider.setPaintTicks(true);
@@ -100,11 +113,16 @@ public class mainFrame extends JFrame {
 		slider.setBounds(29, 78, 38, 102);
 		pnlConfig.add(slider);
 		
-		JLabel lblStmax = new JLabel("Stock m\u00E1ximo.");
-		lblStmax.setBounds(90, 119, 174, 20);
+		JLabel lblStmax = new JLabel("Stock m\u00E1ximo: ");
+		lblStmax.setBounds(90, 119, 78, 20);
 		pnlConfig.add(lblStmax);
 		
 		JSpinner spinner = new JSpinner();
+		spinner.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				if((int)spinner.getValue()<0)spinner.setValue(0);
+			}
+		});
 		spinner.setBounds(22, 191, 58, 20);
 		pnlConfig.add(spinner);
 		
@@ -112,12 +130,25 @@ public class mainFrame extends JFrame {
 		lblIter.setBounds(90, 193, 123, 17);
 		pnlConfig.add(lblIter);
 		
+		txtTxtstmax = new JTextField();
+		txtTxtstmax.setText(String.valueOf(slider.getValue()));
+		txtTxtstmax.setEditable(false);
+		txtTxtstmax.setBounds(178, 119, 38, 20);
+		pnlConfig.add(txtTxtstmax);
+		txtTxtstmax.setColumns(10);
+		
 		JButton btnRunSimu = new JButton("Simular");
 		btnRunSimu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if((int)spinner.getValue()<=0) JOptionPane.showMessageDialog(null,"Tiene que haber como mínimo una iteración!");
 				else{
-					
+					int emp = Integer.parseInt((String) cbxEmpleados.getSelectedItem());
+					int stm = slider.getValue();
+					int iter = (int)spinner.getValue(); 
+					mainLogic logic = mainLogic.getInstance();
+					logic.ejecutarSimulacion(emp, stm, iter);
+					txtPCR.setText(String.valueOf(logic.getPCR()));
+					txtGN.setText(String.valueOf(logic.getGN()));
 				}
 			}
 		});
@@ -142,7 +173,6 @@ public class mainFrame extends JFrame {
 		txtPCR = new JTextField();
 		txtPCR.setBounds(10, 61, 86, 20);
 		pnlResults.add(txtPCR);
-		txtPCR.setEnabled(false);
 		txtPCR.setEditable(false);
 		txtPCR.setColumns(10);
 		
@@ -150,11 +180,10 @@ public class mainFrame extends JFrame {
 		txtGN.setBounds(119, 61, 86, 20);
 		pnlResults.add(txtGN);
 		txtGN.setEditable(false);
-		txtGN.setEnabled(false);
 		txtGN.setColumns(10);
 		
 		JLabel lblLblpcr = new JLabel("Porc. Cli. Retiran");
-		lblLblpcr.setBounds(10, 43, 86, 14);
+		lblLblpcr.setBounds(10, 43, 98, 14);
 		pnlResults.add(lblLblpcr);
 		
 		JLabel lblLblgn = new JLabel("Ganancia Neta");

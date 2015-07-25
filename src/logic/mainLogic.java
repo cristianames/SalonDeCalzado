@@ -12,7 +12,8 @@ public class mainLogic {
 	      }
 	      return instance;
 	   }
-	
+	private int iteraciones;
+	   
 	private final IDatos iAn = new DatosIAn();
 	private final IDatos iAp = new DatosIAp();
 	private final IDatos tAn = new DatosTAn();
@@ -22,7 +23,19 @@ public class mainLogic {
 	private int cantEmpleados;
 	private int stockMaximo;
 	
+	private int pcr;
+	public int getPCR(){return pcr;}
+	
+	private int gn;
+	public int getGN(){return gn;}
 	
 	
-	   
+	public void ejecutarSimulacion(int emp, int stm, int iter){
+		cantEmpleados = emp;
+		stockMaximo = stm;
+		iteraciones = iter;
+		//TODO CARGAR LA LOGICA DE LA SIMULACION.
+		pcr = iter / emp;				//Valor de prueba.
+		gn = stm * iter - emp * 10;		//Valor de prueba.
+	}	   
 }
