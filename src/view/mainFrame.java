@@ -32,8 +32,13 @@ import javax.swing.border.LineBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputMethodListener;
+import java.sql.Time;
+import java.util.Random;
 import java.awt.event.InputMethodEvent;
 import javax.swing.event.ChangeListener;
+
+import javafx.scene.control.ProgressBar;
+
 import javax.swing.event.ChangeEvent;
 
 public class mainFrame extends JFrame {
@@ -97,7 +102,7 @@ public class mainFrame extends JFrame {
 		pnlConfig.add(cbxEmpleados);
 		
 		JLabel lblEmpleados = new JLabel("Cantidad de empleados a contratar.");
-		lblEmpleados.setBounds(90, 50, 186, 17);
+		lblEmpleados.setBounds(90, 50, 206, 17);
 		pnlConfig.add(lblEmpleados);
 		
 		JSlider slider = new JSlider();
@@ -114,7 +119,7 @@ public class mainFrame extends JFrame {
 		pnlConfig.add(slider);
 		
 		JLabel lblStmax = new JLabel("Stock m\u00E1ximo: ");
-		lblStmax.setBounds(90, 119, 78, 20);
+		lblStmax.setBounds(90, 119, 88, 20);
 		pnlConfig.add(lblStmax);
 		
 		JSpinner spinner = new JSpinner();
@@ -127,7 +132,7 @@ public class mainFrame extends JFrame {
 		pnlConfig.add(spinner);
 		
 		JLabel lblIter = new JLabel("Cantidad de iteraciones");
-		lblIter.setBounds(90, 193, 123, 17);
+		lblIter.setBounds(90, 193, 145, 17);
 		pnlConfig.add(lblIter);
 		
 		txtTxtstmax = new JTextField();
@@ -137,27 +142,9 @@ public class mainFrame extends JFrame {
 		pnlConfig.add(txtTxtstmax);
 		txtTxtstmax.setColumns(10);
 		
-		JButton btnRunSimu = new JButton("Simular");
-		btnRunSimu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if((int)spinner.getValue()<=0) JOptionPane.showMessageDialog(null,"Tiene que haber como mínimo una iteración!");
-				else{
-					int emp = Integer.parseInt((String) cbxEmpleados.getSelectedItem());
-					int stm = slider.getValue();
-					int iter = (int)spinner.getValue(); 
-					mainLogic logic = mainLogic.getInstance();
-					logic.ejecutarSimulacion(emp, stm, iter);
-					txtPCR.setText(String.valueOf(logic.getPCR()));
-					txtGN.setText(String.valueOf(logic.getGN()));
-				}
-			}
-		});
-		btnRunSimu.setBounds(254, 311, 137, 23);
-		contentPane.add(btnRunSimu);
-		
 		JButton btnAdvanced = new JButton("Ver Detalles");
 		btnAdvanced.setEnabled(false);
-		btnAdvanced.setBounds(281, 360, 89, 23);
+		btnAdvanced.setBounds(262, 360, 129, 23);
 		contentPane.add(btnAdvanced);
 		
 		JPanel pnlResults = new JPanel();
@@ -189,5 +176,43 @@ public class mainFrame extends JFrame {
 		JLabel lblLblgn = new JLabel("Ganancia Neta");
 		lblLblgn.setBounds(119, 43, 86, 14);
 		pnlResults.add(lblLblgn);
+		
+		JButton btnRunSimu = new JButton("Simular");
+		btnRunSimu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if((int)spinner.getValue()<=0) JOptionPane.showMessageDialog(null,"Tiene que haber como mínimo una iteración!");
+				else{
+					int emp = Integer.parseInt((String) cbxEmpleados.getSelectedItem());
+					int stm = slider.getValue();
+					int iter = (int)spinner.getValue(); 
+					mainLogic logic = mainLogic.getInstance();
+					logic.ejecutarSimulacion(emp, stm, iter);
+					int progress = 0;
+					int acum;
+					while (progress < 1000){
+						progress += dormir();
+						acum = progress / 10;
+						progressBar.setValue(acum);
+					}
+					progressBar.setValue(100);						
+					txtPCR.setText(String.valueOf(logic.getPCR()));
+					txtGN.setText(String.valueOf(logic.getGN()));
+				}
+			}
+		});
+		btnRunSimu.setBounds(254, 311, 137, 23);
+		contentPane.add(btnRunSimu);
+	}
+	
+	private int dormir(){
+		Random ran = new Random();
+		int time = ran.nextInt(400);
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return time;
 	}
 }
