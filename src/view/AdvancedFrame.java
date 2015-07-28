@@ -36,7 +36,7 @@ public class AdvancedFrame extends JDialog {
 	private String[] columnNames = {
 			"Evento",
             "T",
-            "TC",
+            "St Actual",
             "St vendido",
             "St rechazado",
             "Precio venta",
@@ -116,15 +116,15 @@ public class AdvancedFrame extends JDialog {
 		lblPPS.setBounds(10, 11, 131, 14);
 		pnlResult.add(lblPPS);
 		
-		JLabel lblPTE = new JLabel("Porc. tiempo espera");
+		JLabel lblPTE = new JLabel("%. tiempo espera");
 		lblPTE.setBounds(10, 57, 131, 14);
 		pnlResult.add(lblPTE);
 		
-		JLabel lblPPP = new JLabel("Porc. pares perdidos");
+		JLabel lblPPP = new JLabel("%. pares perdidos");
 		lblPPP.setBounds(10, 103, 131, 14);
 		pnlResult.add(lblPPP);
 		
-		JLabel lblPCA = new JLabel("Porc. clientes arrep.");
+		JLabel lblPCA = new JLabel("%. clientes arrep.");
 		lblPCA.setBounds(10, 149, 131, 14);
 		pnlResult.add(lblPCA);
 		

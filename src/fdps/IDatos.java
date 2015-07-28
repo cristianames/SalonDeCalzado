@@ -2,6 +2,6 @@ package fdps;
 
 public interface IDatos {
 
-	public int getNextValue(float t);
+	public float getNextValue(float t);
 	
 }

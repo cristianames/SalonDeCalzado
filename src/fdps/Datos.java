@@ -6,19 +6,17 @@ public abstract class Datos implements IDatos {
 
 	protected int x = 0;
 	protected float y = 0;
-//	protected Random q = new Random();
-//	protected Random r = new Random();
 	
 	protected int a;
 	protected int b;
 	protected float m;
 	
 	protected void calculateValues(){
-		x = a + (b - a) * new Random().nextInt();
-		y = m * new Random().nextInt();
+		x = (int) (a + (b - a) * new Random().nextFloat());
+		y = m * new Random().nextFloat();
 	}
 	
-	public int getNextValue(float t) {
+	public float getNextValue(float t) {
 		do {
 			calculateValues();
 		} while (calculateFy() >= y);

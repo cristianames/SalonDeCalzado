@@ -106,8 +106,8 @@ public class IntroFrame extends JFrame {
 		slider.setMinorTickSpacing(50);
 		slider.setMajorTickSpacing(100);
 		slider.setMinimum(0);
-		slider.setMaximum(1000);
-		slider.setValue(500);
+		slider.setMaximum(200);
+		slider.setValue(20);
 		slider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				txtTxtstmax.setText(String.valueOf(slider.getValue()));
@@ -117,10 +117,10 @@ public class IntroFrame extends JFrame {
 		slider.setForeground(UIManager.getColor("ToggleButton.darkShadow"));
 		slider.setOrientation(SwingConstants.VERTICAL);
 		slider.setBounds(29, 78, 38, 102);
-		slider.setValue(500);
+		slider.setValue(20);
 		pnlConfig.add(slider);
 		
-		JLabel lblStmax = new JLabel("Stock m\u00E1ximo: ");
+		JLabel lblStmax = new JLabel("St de repos: ");
 		lblStmax.setBounds(90, 119, 88, 20);
 		pnlConfig.add(lblStmax);
 		
@@ -184,7 +184,7 @@ public class IntroFrame extends JFrame {
 		txtGN.setEditable(false);
 		txtGN.setColumns(10);
 		
-		JLabel lblLblpcr = new JLabel("% Clien. Retiran");
+		JLabel lblLblpcr = new JLabel("% Clien. Arrep.");
 		lblLblpcr.setBounds(10, 43, 98, 14);
 		pnlResults.add(lblLblpcr);
 		
@@ -225,8 +225,9 @@ public class IntroFrame extends JFrame {
 		Controller logic = Controller.getInstance();
 		logic.runSimulation(iter, emp, stm);
 		btnAdvanced.setEnabled(true);
-		txtPCR.setText(String.valueOf(logic.getPPP()));
-		txtGN.setText(String.valueOf(logic.getGN()));
+		float[] results = logic.getResultVars();
+		txtPCR.setText(String.valueOf(results[3]));
+		txtGN.setText(String.valueOf(results[4]));
 		progressBar.setForeground(new Color(50, 205, 50));	//Lime green
 	}
 	

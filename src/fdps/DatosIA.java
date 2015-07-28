@@ -11,7 +11,7 @@ public class DatosIA extends Datos{
 	}
 	
 	@Override
-	public int getNextValue(float t) {
+	public float getNextValue(float t) {
 		if (t%480 <240) return deadTime.getNextValue(t);
 		else return normalTimer.getNextValue(t);
 	}

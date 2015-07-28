@@ -11,26 +11,31 @@ public class DatosTest {
 	@Test
 	public void testDatosIAd(){
 		mock = new DatosIA(new DatosIAd(),new DatosIAn());
-		int val = mock.getNextValue(9760);
+		float val = mock.getNextValue(9760);
 		assertTrue(val>=10 && val <= 40);
 	}
 	@Test
 	public void testDatosIAn(){
 		mock = new DatosIA(new DatosIAd(),new DatosIAn());
-		int val = mock.getNextValue(5580);
+		float val = mock.getNextValue(5580);
 		assertTrue(val>=60 && val <= 100);
 	}
 	@Test
 	public void testDatosPPc(){
 		mock = new DatosPPc();
-		int val = mock.getNextValue(5580);
+		float val = mock.getNextValue(5580);
 		assertTrue(val>=100 && val <= 450);
 	}
 	@Test
 	public void testDatosTa(){
 		mock = new DatosTA();
-		int val = mock.getNextValue(5580);
+		float val = mock.getNextValue(5580);
 		assertTrue(val>=15 && val <= 80);
 	}
-
+	@Test
+	public void testRejected(){
+		mock = new Reject();
+		float val = mock.getNextValue(800);
+		assertTrue(val <= 1f);
+	}
 }

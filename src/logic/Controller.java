@@ -20,13 +20,6 @@ public class Controller {
 //	----------------------------------------
 	   
 	private Simulator simulator;
-	
-	private int ppp;
-	public int getPPP(){return ppp;}	
-	private int gn;
-	public int getGN(){return gn;}
-	
-
 	/**
 	 * Launch the application.
 	 */
@@ -47,23 +40,24 @@ public class Controller {
 		
 		simulator = new Simulator(iter, emp, stm);
 		simulator.simulate();
-		ppp = iter / emp;				//Valor de prueba.
-		gn = stm * iter - emp * 10;		//Valor de prueba.
+//		ppp = iter / emp;				//Valor de prueba.
+//		gn = stm * iter - emp * 10;		//Valor de prueba.
 	}
 		
 	public Object[][] obtainSimuDetails(){		
-		Object[][] data = {
-			    {"LLegada",0,0,0,0,0,false},
-			    {"Salida",2,5,1,0,245,false},
-			    {"LLegada",4,0,0,0,0,false},
-			    {"LLegada",10,0,0,0,0,false},
-			    {"Salida",11,14,2,2,490,false},
-			    {"LLegada",14,0,0,0,0,false},
-			    {"LLegada",17,0,0,0,0,true},
-			    {"Salida",19,14,0,1,0,false},
-			    {"LLegada",29,0,0,0,0,false},			    
-			};		
-		return data;
+//		Object[][] data = {
+//			    {"LLegada",0,0,0,0,0,false},
+//			    {"Salida",2,5,1,0,245,false},
+//			    {"LLegada",4,0,0,0,0,false},
+//			    {"LLegada",10,0,0,0,0,false},
+//			    {"Salida",11,14,2,2,490,false},
+//			    {"LLegada",14,0,0,0,0,false},
+//			    {"LLegada",17,0,0,0,0,true},
+//			    {"Salida",19,14,0,1,0,false},
+//			    {"LLegada",29,0,0,0,0,false},			    
+//			};		
+		Object[][] data2 = simulator.obtainSimuDetails();
+		return data2;
 	}
 
 	public Object[][] obtainEmployeeDetails(){
@@ -72,7 +66,8 @@ public class Controller {
 //		        {2, 7.15f,121},
 //		        {3, 9.1f,236},
 //		        };
-		return simulator.obtainEmployeeDetails();
+		Object[][] data2 = simulator.obtainEmployeeDetails();
+		return data2;
 	}
 	
 	public float[] getResultVars(){
