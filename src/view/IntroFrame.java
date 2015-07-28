@@ -1,82 +1,78 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JToolBar;
 import javax.swing.JButton;
-import java.awt.GridLayout;
-import javax.swing.JSplitPane;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
-import javax.swing.JFormattedTextField;
-import javax.swing.JSpinner;
+import javax.swing.Timer;
 import java.awt.Font;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
-import javax.swing.JTree;
 import javax.swing.UIManager;
 import java.awt.Color;
 import javax.swing.border.MatteBorder;
 
-import logic.mainLogic;
+import logic.Controller;
 
 import javax.swing.border.LineBorder;
 import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.InputMethodListener;
-import java.sql.Time;
 import java.util.Random;
-import java.awt.event.InputMethodEvent;
+import java.awt.event.ActionEvent;
 import javax.swing.event.ChangeListener;
 
-import javafx.scene.control.ProgressBar;
-
 import javax.swing.event.ChangeEvent;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 
-public class mainFrame extends JFrame {
 
+
+public class IntroFrame extends JFrame {
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1947126327001296656L;
+	private JComboBox cbxEmpleados;
+	private JSlider slider;
 	private JPanel contentPane;
 	private JTextField txtPCR;
 	private JTextField txtGN;
-	/**
-	 * @wbp.nonvisual location=-27,259
-	 */
-	private final JTree tree = new JTree();
 	private JTextField txtTxtstmax;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					mainFrame frame = new mainFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private JTextField ftxtTsim;
+	private JProgressBar progressBar;
+	private Timer timer;
+	private JRadioButton rdbtnMonth;
+	JButton btnAdvanced;
+	
+	private IntroFrame frame;
+	private final ButtonGroup buttonGroup_1 = new ButtonGroup();
 
 	/**
 	 * Create the frame.
 	 */
-	public mainFrame() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public IntroFrame() {
+		setResizable(false);
+		setTitle("TheGRID - SALON DE CALZADO");
+		frame = this;
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frame.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		        if (JOptionPane.showConfirmDialog(frame, 
+		            "¿Realmente desea cerrar?", "Finalizar", 
+		            JOptionPane.YES_NO_OPTION,
+		            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+		            System.exit(0);
+		        }
+		    }
+		});
+		
 		setBounds(100, 100, 435, 446);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(240, 240, 240));
@@ -96,7 +92,7 @@ public class mainFrame extends JFrame {
 		contentPane.add(pnlConfig);
 		pnlConfig.setLayout(null);
 		
-		JComboBox cbxEmpleados = new JComboBox();
+		cbxEmpleados = new JComboBox<Object>();
 		cbxEmpleados.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4"}));
 		cbxEmpleados.setBounds(29, 47, 38, 20);
 		pnlConfig.add(cbxEmpleados);
@@ -105,7 +101,13 @@ public class mainFrame extends JFrame {
 		lblEmpleados.setBounds(90, 50, 206, 17);
 		pnlConfig.add(lblEmpleados);
 		
-		JSlider slider = new JSlider();
+		slider = new JSlider();
+		slider.setPaintTicks(true);
+		slider.setMinorTickSpacing(50);
+		slider.setMajorTickSpacing(100);
+		slider.setMinimum(0);
+		slider.setMaximum(1000);
+		slider.setValue(500);
 		slider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				txtTxtstmax.setText(String.valueOf(slider.getValue()));
@@ -113,27 +115,14 @@ public class mainFrame extends JFrame {
 		});
 		slider.setBackground(UIManager.getColor("ToggleButton.highlight"));
 		slider.setForeground(UIManager.getColor("ToggleButton.darkShadow"));
-		slider.setPaintTicks(true);
 		slider.setOrientation(SwingConstants.VERTICAL);
 		slider.setBounds(29, 78, 38, 102);
+		slider.setValue(500);
 		pnlConfig.add(slider);
 		
 		JLabel lblStmax = new JLabel("Stock m\u00E1ximo: ");
 		lblStmax.setBounds(90, 119, 88, 20);
 		pnlConfig.add(lblStmax);
-		
-		JSpinner spinner = new JSpinner();
-		spinner.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				if((int)spinner.getValue()<0)spinner.setValue(0);
-			}
-		});
-		spinner.setBounds(22, 191, 58, 20);
-		pnlConfig.add(spinner);
-		
-		JLabel lblIter = new JLabel("Cantidad de iteraciones");
-		lblIter.setBounds(90, 193, 145, 17);
-		pnlConfig.add(lblIter);
 		
 		txtTxtstmax = new JTextField();
 		txtTxtstmax.setText(String.valueOf(slider.getValue()));
@@ -142,7 +131,32 @@ public class mainFrame extends JFrame {
 		pnlConfig.add(txtTxtstmax);
 		txtTxtstmax.setColumns(10);
 		
-		JButton btnAdvanced = new JButton("Ver Detalles");
+		ftxtTsim = new JTextField();
+		ftxtTsim.setBounds(29, 201, 70, 20);
+		pnlConfig.add(ftxtTsim);		
+		
+		
+		rdbtnMonth = new JRadioButton("Simular meses");
+		buttonGroup_1.add(rdbtnMonth);
+		rdbtnMonth.setBackground(Color.WHITE);
+		rdbtnMonth.setBounds(130, 178, 135, 23);
+		pnlConfig.add(rdbtnMonth);
+		
+		JRadioButton rdbtnMinutes = new JRadioButton("Simular minutos");
+		rdbtnMinutes.setSelected(true);
+		buttonGroup_1.add(rdbtnMinutes);
+		rdbtnMinutes.setBackground(Color.WHITE);
+		rdbtnMinutes.setBounds(130, 220, 135, 23);
+		pnlConfig.add(rdbtnMinutes);
+		
+		btnAdvanced = new JButton("Ver Detalles");
+		btnAdvanced.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new AdvancedFrame(frame);
+				progressBar.setValue(0);
+				progressBar.setForeground(new Color(0, 139, 139));	//Light blue
+			}
+		});
 		btnAdvanced.setEnabled(false);
 		btnAdvanced.setBounds(262, 360, 129, 23);
 		contentPane.add(btnAdvanced);
@@ -153,7 +167,8 @@ public class mainFrame extends JFrame {
 		contentPane.add(pnlResults);
 		pnlResults.setLayout(null);
 		
-		JProgressBar progressBar = new JProgressBar();
+		progressBar = new JProgressBar();
+		progressBar.setForeground(new Color(0, 139, 139));	//Light blue		
 		progressBar.setBounds(34, 11, 146, 21);
 		pnlResults.add(progressBar);
 		
@@ -169,7 +184,7 @@ public class mainFrame extends JFrame {
 		txtGN.setEditable(false);
 		txtGN.setColumns(10);
 		
-		JLabel lblLblpcr = new JLabel("Porc. Cli. Retiran");
+		JLabel lblLblpcr = new JLabel("% Clien. Retiran");
 		lblLblpcr.setBounds(10, 43, 98, 14);
 		pnlResults.add(lblLblpcr);
 		
@@ -180,39 +195,51 @@ public class mainFrame extends JFrame {
 		JButton btnRunSimu = new JButton("Simular");
 		btnRunSimu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if((int)spinner.getValue()<=0) JOptionPane.showMessageDialog(null,"Tiene que haber como mínimo una iteración!");
+				progressBar.setForeground(new Color(0, 139, 139));	//Light blue
+				try {
+					Integer.parseInt((String) ftxtTsim.getText());
+				} catch (NumberFormatException nfe){
+					JOptionPane.showMessageDialog(null,"Ingrese números en el campo de tiempo!","Datos inválidos", JOptionPane.ERROR_MESSAGE);
+					return;
+				}				
+				if(Integer.parseInt((String) ftxtTsim.getText())<=0) JOptionPane.showMessageDialog(null,"Tiene que haber como mínimo una iteración!","Cantidad incorrecta",JOptionPane.INFORMATION_MESSAGE);
 				else{
-					int emp = Integer.parseInt((String) cbxEmpleados.getSelectedItem());
-					int stm = slider.getValue();
-					int iter = (int)spinner.getValue(); 
-					mainLogic logic = mainLogic.getInstance();
-					logic.ejecutarSimulacion(emp, stm, iter);
-					int progress = 0;
-					int acum;
-					while (progress < 1000){
-						progress += dormir();
-						acum = progress / 10;
-						progressBar.setValue(acum);
-					}
-					progressBar.setValue(100);						
-					txtPCR.setText(String.valueOf(logic.getPCR()));
-					txtGN.setText(String.valueOf(logic.getGN()));
+					timer = new Timer(50,new TimerListener());
+					timer.start();
 				}
 			}
 		});
 		btnRunSimu.setBounds(254, 311, 137, 23);
 		contentPane.add(btnRunSimu);
+		
+
+		frame.setLocationRelativeTo(null);
+		
+		  
+	    }
+	private void runSimulation(){
+	    int emp = Integer.parseInt((String) cbxEmpleados.getSelectedItem());
+		int stm = slider.getValue();
+		int iter = Integer.parseInt((String) ftxtTsim.getText()); 
+		if (rdbtnMonth.isSelected()) iter *= 10560;
+		Controller logic = Controller.getInstance();
+		logic.runSimulation(iter, emp, stm);
+		btnAdvanced.setEnabled(true);
+		txtPCR.setText(String.valueOf(logic.getPPP()));
+		txtGN.setText(String.valueOf(logic.getGN()));
+		progressBar.setForeground(new Color(50, 205, 50));	//Lime green
 	}
 	
-	private int dormir(){
-		Random ran = new Random();
-		int time = ran.nextInt(400);
-		try {
-			Thread.sleep(time);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return time;
+	class TimerListener implements ActionListener {
+    	int val = 0;
+    	Random ran = new Random();
+        public void actionPerformed(ActionEvent evt) {
+        	progressBar.setValue(val+=ran.nextInt(15));
+        	if(val >= 100){
+        		timer.stop();
+        		runSimulation();
+        	}	
+        }	    
 	}
+	
 }
