@@ -116,7 +116,7 @@ public class AdvancedFrame extends JDialog {
 		lblPPS.setBounds(10, 11, 131, 14);
 		pnlResult.add(lblPPS);
 		
-		JLabel lblPTE = new JLabel("%. tiempo espera");
+		JLabel lblPTE = new JLabel("Prom. tiempo espera");
 		lblPTE.setBounds(10, 57, 131, 14);
 		pnlResult.add(lblPTE);
 		

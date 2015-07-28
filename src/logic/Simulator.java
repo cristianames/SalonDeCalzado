@@ -72,7 +72,8 @@ public class Simulator {
 			while(t < tmax){
 				tpsi = getMinTps();
 				if(tpllca<=employees[tpsi][0]){
-					if(tpllca <= tpllp){
+					if(tpllca < tpllp){
+						
 						tpllcaProcess();
 						Object[] temp = {"LlegadaCli",t,st,0,0,0,rejected};
 						registry.add(temp);
@@ -116,7 +117,7 @@ public class Simulator {
 				spv += pv;
 				if(tc < t) tc = t + tec;
 				else tc = tc + tec;
-			}
+			}else pv = 0;
 			ns--;
 			if(ns >= numEmp){
 				int ta = (int) tA.getNextValue(t);
@@ -138,7 +139,7 @@ public class Simulator {
 			sps += (tpllca - t) * ns;
 			t = tpllca;
 			tpllca = (int) (t + iA.getNextValue(t));
-			if (calculateCL() > 6){
+			if (calculateCL() > 5){
 				ca++;	//A fines practicos se invirtio el orden del if.
 				rejected = true;
 			}
@@ -194,7 +195,7 @@ public class Simulator {
 			
 			int vst = st; 	//Virtual stock;
 			for (int i = stv; i > 0; i--) {
-				if( r.nextFloat() >= rej.getNextValue(vst)){
+				if( r.nextFloat() < rej.getNextValue(vst)){
 					cr++;
 					stv--;
 				} else vst--;				
@@ -213,7 +214,7 @@ public class Simulator {
 			results[1] = (sps - sta) / nt;									//Tiempo de espera. 
 			if(spr > 0 || sstv > 0){
 				float val = spr + sstv;
-				results[2] = (spr / val) * 100;	//% Pares perdidos. (No vendidos por falta de stock)
+				results[2] = (spr / val) * 100;				//% Pares perdidos. (No vendidos por falta de stock)
 			}
 			else results[2] = 0;
 			results[3] = (ca /(float)(ca + nt)) * 100;							//% Clientes arrepentidos.

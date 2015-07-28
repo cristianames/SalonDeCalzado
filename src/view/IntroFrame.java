@@ -106,8 +106,8 @@ public class IntroFrame extends JFrame {
 		slider.setMinorTickSpacing(50);
 		slider.setMajorTickSpacing(100);
 		slider.setMinimum(0);
-		slider.setMaximum(200);
-		slider.setValue(20);
+		slider.setMaximum(250);
+		slider.setValue(80);
 		slider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				txtTxtstmax.setText(String.valueOf(slider.getValue()));
@@ -117,7 +117,7 @@ public class IntroFrame extends JFrame {
 		slider.setForeground(UIManager.getColor("ToggleButton.darkShadow"));
 		slider.setOrientation(SwingConstants.VERTICAL);
 		slider.setBounds(29, 78, 38, 102);
-		slider.setValue(20);
+		slider.setValue(80);
 		pnlConfig.add(slider);
 		
 		JLabel lblStmax = new JLabel("St de repos: ");

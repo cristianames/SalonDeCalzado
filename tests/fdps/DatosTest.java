@@ -35,7 +35,9 @@ public class DatosTest {
 	@Test
 	public void testRejected(){
 		mock = new Reject();
-		float val = mock.getNextValue(800);
-		assertTrue(val <= 1f);
+		float prob0 = mock.getNextValue(1);
+		float prob1 = mock.getNextValue(20);
+		float prob2 = mock.getNextValue(249);
+		assertTrue(prob1 > prob2);
 	}
 }
